@@ -410,23 +410,32 @@
     }
     .about-bio p + p { margin-top:1.1rem; }
 
-    .about-highlight {
-      display:grid; grid-template-columns:1fr 1fr;
-      gap:1rem; margin-top:.5rem;
+    /* stat strip — full width below the two-column grid */
+    .about-stats-strip {
+      display:grid; grid-template-columns:repeat(4,1fr);
+      gap:1rem; margin-top:3.5rem;
     }
     .hl-card {
       background:var(--card); border:1px solid var(--border);
-      border-radius:8px; padding:1.2rem 1.4rem;
-      transition: border-color .25s, background .25s;
+      border-radius:10px; padding:1.6rem 1.4rem;
+      text-align:center; position:relative; overflow:hidden;
+      transition: border-color .3s, background .3s, transform .3s;
     }
-    .hl-card:hover { border-color:rgba(200,169,110,.3); background:var(--card-hover); }
+    .hl-card::after {
+      content:''; position:absolute; bottom:0; left:50%; transform:translateX(-50%);
+      width:40%; height:2px;
+      background:linear-gradient(to right, transparent, var(--accent), transparent);
+      opacity:0; transition:opacity .3s;
+    }
+    .hl-card:hover { border-color:rgba(200,169,110,.35); background:var(--card-hover); transform:translateY(-5px); }
+    .hl-card:hover::after { opacity:1; }
     .hl-card .hl-num {
-      font-family:'Playfair Display',serif; font-size:2rem;
-      font-weight:700; color:var(--accent); line-height:1;
+      font-family:'Playfair Display',serif; font-size:2.6rem;
+      font-weight:900; color:var(--accent); line-height:1;
     }
     .hl-card .hl-desc {
-      font-size:.72rem; color:var(--muted); margin-top:.3rem;
-      letter-spacing:.05em; line-height:1.4;
+      font-size:.68rem; color:var(--muted); margin-top:.5rem;
+      letter-spacing:.06em; line-height:1.5; text-transform:uppercase;
     }
 
     /* right – skills */
@@ -558,7 +567,7 @@
       .section-divider { margin:0 1.8rem; }
       #about { padding:5rem 1.4rem; }
       .about-grid { grid-template-columns:1fr; gap:3rem; }
-      .about-highlight { grid-template-columns:1fr 1fr; }
+      .about-stats-strip { grid-template-columns:1fr 1fr; }
       #projects, #contact { padding:4rem 1.8rem; }
     }
   </style>
@@ -638,15 +647,12 @@
           <div class="deco-corner-br"></div>
 
           <div class="photo-box" id="photoBox">
-            <!--
-              ╔══════════════════════════════════════════╗
-              ║  TO ADD YOUR PHOTO — replace everything  ║
-              ║  inside .photo-box with:                 ║
-              ║                                          ║
-              ║  <img src="your-photo.jpg"               ║
-              ║       alt="Ciro Ezra Dagdag" />          ║
-              ╚══════════════════════════════════════════╝
-            -->
+                          
+                                                      
+             <img src="test.PNG"            
+                  alt="Ciro Ezra Dagdag" />         
+             
+            
             <div class="photo-placeholder-inner">
               <div class="photo-monogram">CED</div>
               <div class="photo-icon-wrap">
@@ -703,25 +709,7 @@
             <p>I am also eager to expand my knowledge in system development, automation, UI/UX design, and emerging technologies.</p>
           </div>
 
-          <div class="about-highlight reveal" style="transition-delay:.2s">
-            <div class="hl-card">
-              <div class="hl-num">2nd</div>
-              <div class="hl-desc">Year BSIT<br>Student</div>
-            </div>
-            <div class="hl-card">
-              <div class="hl-num">3+</div>
-              <div class="hl-desc">Dev Projects<br>Completed</div>
-            </div>
-            <div class="hl-card">
-              <div class="hl-num">5+</div>
-              <div class="hl-desc">Technologies<br>Learned</div>
-            </div>
-            <div class="hl-card">
-              <div class="hl-num">∞</div>
-              <div class="hl-desc">Curiosity &amp;<br>Drive</div>
-            </div>
-          </div>
-        </div>
+        </div><!-- end about-left -->
 
         <!-- right — skills -->
         <div class="about-right">
@@ -816,6 +804,26 @@
 
         </div><!-- end about-right -->
       </div><!-- end about-grid -->
+
+      <!-- ── STAT STRIP — full width ── -->
+      <div class="about-stats-strip reveal" style="transition-delay:.25s">
+        <div class="hl-card">
+          <div class="hl-num">2nd</div>
+          <div class="hl-desc">Year BSIT<br>Student</div>
+        </div>
+        <div class="hl-card">
+          <div class="hl-num">3+</div>
+          <div class="hl-desc">Dev Projects<br>Completed</div>
+        </div>
+        <div class="hl-card">
+          <div class="hl-num">5+</div>
+          <div class="hl-desc">Technologies<br>Learned</div>
+        </div>
+        <div class="hl-card">
+          <div class="hl-num">∞</div>
+          <div class="hl-desc">Curiosity &amp;<br>Drive</div>
+        </div>
+      </div>
     </div><!-- end section-wrap -->
   </section>
 
