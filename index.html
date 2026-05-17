@@ -520,23 +520,280 @@
     .tech-card:hover .tech-dot.filled { background:var(--tc-dot-h, var(--accent)); }
 
     /* ════════════════════════════════
-       PLACEHOLDER SECTIONS
+       PROJECTS
     ════════════════════════════════ */
-    #projects, #contact {
-      min-height:60vh; display:flex;
-      align-items:center; justify-content:center;
-      padding:6rem 4rem; position:relative; z-index:1;
+    #projects {
+      position:relative; z-index:1;
+      padding:7rem 2rem;
+      display:flex; justify-content:center;
     }
-    .coming-soon { text-align:center; }
-    .coming-soon h2 {
-      font-family:'Playfair Display',serif; font-size:3rem;
-      color:var(--muted); opacity:.25;
+
+    .projects-header {
+      display:flex; align-items:flex-end; justify-content:space-between;
+      flex-wrap:wrap; gap:1rem; margin-bottom:3.5rem;
     }
-    .coming-soon p {
-      font-family:'Space Mono',monospace; font-size:.72rem;
-      color:var(--muted); opacity:.25; margin-top:.8rem;
-      letter-spacing:.1em; text-transform:uppercase;
+    .projects-header-left { display:flex; flex-direction:column; gap:.6rem; }
+    .projects-count {
+      font-family:'Space Mono',monospace; font-size:.65rem;
+      color:var(--muted); letter-spacing:.15em;
     }
+
+    .projects-grid {
+      display:grid; grid-template-columns:repeat(3,1fr);
+      gap:1.4rem;
+    }
+
+    /* project card */
+    .proj-card {
+      position:relative; border-radius:14px; overflow:hidden;
+      background:var(--card); border:1px solid var(--border);
+      display:flex; flex-direction:column;
+      transition: transform .3s ease, box-shadow .3s ease, border-color .3s;
+      cursor:pointer;
+    }
+    .proj-card:hover {
+      transform:translateY(-8px);
+      box-shadow:0 24px 60px rgba(0,0,0,.45);
+      border-color:rgba(200,169,110,.3);
+    }
+
+    /* top image strip */
+    .proj-img {
+      position:relative; height:180px; overflow:hidden;
+      background:var(--surface);
+    }
+    .proj-img img {
+      width:100%; height:100%; object-fit:cover; display:block;
+      transition: transform .5s ease;
+    }
+    .proj-card:hover .proj-img img { transform:scale(1.06); }
+
+    /* fallback mock screen when no image */
+    .proj-mock {
+      width:100%; height:100%;
+      display:flex; align-items:center; justify-content:center;
+      position:relative; overflow:hidden;
+    }
+    .proj-mock-bg {
+      position:absolute; inset:0;
+      background:linear-gradient(135deg, var(--surface) 0%, var(--card) 100%);
+    }
+    .proj-mock-grid {
+      position:absolute; inset:0; opacity:.06;
+      background-image: linear-gradient(var(--accent) 1px, transparent 1px),
+                        linear-gradient(90deg, var(--accent) 1px, transparent 1px);
+      background-size:28px 28px;
+    }
+    .proj-mock-icon {
+      position:relative; z-index:1;
+      width:56px; height:56px; border-radius:14px;
+      background:var(--accent-dim); border:1px solid rgba(200,169,110,.2);
+      display:flex; align-items:center; justify-content:center;
+    }
+    .proj-mock-icon svg { opacity:.7; }
+
+    /* hover overlay with link buttons */
+    .proj-overlay {
+      position:absolute; inset:0;
+      background:rgba(11,12,16,.82); backdrop-filter:blur(4px);
+      display:flex; align-items:center; justify-content:center; gap:.8rem;
+      opacity:0; transition:opacity .3s;
+    }
+    .proj-card:hover .proj-overlay { opacity:1; }
+    .proj-link-btn {
+      display:inline-flex; align-items:center; gap:.45rem;
+      padding:.6rem 1.2rem; border-radius:6px;
+      font-size:.75rem; font-weight:600; letter-spacing:.04em;
+      text-decoration:none; transition: transform .2s, box-shadow .2s;
+    }
+    .proj-link-btn:hover { transform:translateY(-2px); }
+    .proj-link-btn.primary {
+      background:var(--accent); color:var(--bg);
+      box-shadow:0 4px 16px var(--accent-glow);
+    }
+    .proj-link-btn.secondary {
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.15); color:var(--text);
+    }
+
+    /* number badge */
+    .proj-num {
+      position:absolute; top:12px; left:14px; z-index:2;
+      font-family:'Space Mono',monospace; font-size:.6rem;
+      color:var(--accent); background:rgba(11,12,16,.8);
+      border:1px solid rgba(200,169,110,.25); border-radius:4px;
+      padding:.2rem .55rem; letter-spacing:.1em;
+    }
+
+    /* card body */
+    .proj-body {
+      padding:1.4rem 1.5rem 1.6rem;
+      display:flex; flex-direction:column; gap:.9rem; flex:1;
+    }
+    .proj-top { display:flex; flex-direction:column; gap:.45rem; }
+    .proj-title {
+      font-family:'Playfair Display',serif;
+      font-size:1.2rem; font-weight:700;
+      color:var(--text); line-height:1.2;
+    }
+    .proj-desc {
+      font-size:.84rem; color:var(--muted-light);
+      line-height:1.7;
+    }
+
+    /* tech tags */
+    .proj-tech { display:flex; flex-wrap:wrap; gap:.4rem; margin-top:auto; }
+    .proj-tag {
+      font-family:'Space Mono',monospace; font-size:.62rem;
+      letter-spacing:.06em; padding:.28rem .7rem;
+      border-radius:20px; border:1px solid var(--border);
+      color:var(--muted); background:rgba(255,255,255,.03);
+      transition: color .2s, border-color .2s;
+    }
+    .proj-card:hover .proj-tag { color:var(--accent); border-color:rgba(200,169,110,.3); }
+
+    /* persistent footer button inside card */
+    .proj-footer {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:.9rem 1.5rem 1.2rem;
+      border-top:1px solid var(--border);
+      margin-top:auto;
+    }
+    .proj-view-btn {
+      display:inline-flex; align-items:center; gap:.5rem;
+      font-family:'Space Mono',monospace; font-size:.68rem;
+      color:var(--accent); letter-spacing:.08em; text-transform:uppercase;
+      text-decoration:none; transition:gap .2s, color .2s;
+    }
+    .proj-view-btn:hover { gap:.8rem; }
+    .proj-view-btn svg { transition:transform .2s; }
+    .proj-view-btn:hover svg { transform:translateX(3px); }
+    .proj-status {
+      font-family:'Space Mono',monospace; font-size:.6rem;
+      color:var(--muted); letter-spacing:.08em;
+    }
+    .proj-status.live::before {
+      content:''; display:inline-block; width:5px; height:5px;
+      background:#6dc86d; border-radius:50%; margin-right:.4rem;
+      animation:pulse 2s infinite;
+      vertical-align:middle;
+    }
+
+    /* ════════════════════════════════
+       CONTACT
+    ════════════════════════════════ */
+    #contact {
+      position:relative; z-index:1;
+      padding:7rem 2rem 6rem;
+      display:flex; justify-content:center;
+    }
+    .contact-inner {
+      width:100%; max-width:1160px; margin:0 auto;
+    }
+    .contact-grid {
+      display:grid; grid-template-columns:1fr 1fr;
+      gap:5rem; align-items:start;
+      margin-top:3rem;
+    }
+
+    /* left — message */
+    .contact-left { display:flex; flex-direction:column; gap:2rem; }
+    .contact-tagline {
+      font-family:'Playfair Display',serif; font-style:italic;
+      font-size:1.35rem; color:rgba(232,230,224,.55);
+      line-height:1.7; max-width:420px;
+      border-left:2px solid var(--accent); padding-left:1.3rem;
+    }
+    .contact-blurb {
+      font-size:.93rem; color:var(--muted-light); line-height:1.85; max-width:440px;
+    }
+
+    /* availability badge */
+    .avail-badge {
+      display:inline-flex; align-items:center; gap:.7rem;
+      background:rgba(100,200,100,.08); border:1px solid rgba(100,200,100,.2);
+      border-radius:2rem; padding:.5rem 1.1rem; width:fit-content;
+    }
+    .avail-dot {
+      width:7px; height:7px; background:#6dc86d;
+      border-radius:50%; animation:pulse 2s ease-in-out infinite;
+    }
+    .avail-badge span {
+      font-family:'Space Mono',monospace; font-size:.68rem;
+      color:#6dc86d; letter-spacing:.1em; text-transform:uppercase;
+    }
+
+    /* right — contact cards */
+    .contact-right { display:flex; flex-direction:column; gap:1rem; }
+
+    .contact-card {
+      display:flex; align-items:center; gap:1.2rem;
+      background:var(--card); border:1px solid var(--border);
+      border-radius:12px; padding:1.3rem 1.5rem;
+      text-decoration:none;
+      transition: border-color .25s, background .25s, transform .25s, box-shadow .25s;
+      position:relative; overflow:hidden;
+    }
+    .contact-card::before {
+      content:''; position:absolute; left:0; top:0; bottom:0;
+      width:3px; background:var(--cc-color, var(--accent));
+      border-radius:0 2px 2px 0;
+      opacity:0; transform:scaleY(.4); transition: opacity .3s, transform .3s;
+    }
+    .contact-card:hover {
+      border-color:var(--cc-color, rgba(200,169,110,.3));
+      background:var(--card-hover);
+      transform:translateX(6px);
+      box-shadow:0 8px 30px rgba(0,0,0,.3);
+    }
+    .contact-card:hover::before { opacity:1; transform:scaleY(1); }
+
+    .cc-icon {
+      width:46px; height:46px; border-radius:10px; flex-shrink:0;
+      background:rgba(255,255,255,.04); border:1px solid var(--border);
+      display:flex; align-items:center; justify-content:center;
+      transition: background .25s;
+    }
+    .contact-card:hover .cc-icon { background:rgba(255,255,255,.08); }
+
+    .cc-body { display:flex; flex-direction:column; gap:.2rem; flex:1; }
+    .cc-label {
+      font-family:'Space Mono',monospace; font-size:.62rem;
+      color:var(--muted); letter-spacing:.12em; text-transform:uppercase;
+    }
+    .cc-value {
+      font-size:.9rem; color:var(--text); font-weight:500;
+      transition:color .25s;
+    }
+    .contact-card:hover .cc-value { color:var(--cc-color, var(--accent)); }
+
+    .cc-arrow {
+      color:var(--muted); transition:transform .25s, color .25s;
+      flex-shrink:0;
+    }
+    .contact-card:hover .cc-arrow { transform:translateX(4px); color:var(--cc-color, var(--accent)); }
+
+    /* footer strip */
+    .contact-footer {
+      margin-top:5rem; padding-top:2rem;
+      border-top:1px solid var(--border);
+      display:flex; align-items:center; justify-content:space-between;
+      flex-wrap:wrap; gap:1rem;
+    }
+    .footer-copy {
+      font-family:'Space Mono',monospace; font-size:.65rem;
+      color:var(--muted); letter-spacing:.1em;
+    }
+    .footer-copy span { color:var(--accent); }
+    .back-top {
+      display:inline-flex; align-items:center; gap:.5rem;
+      font-family:'Space Mono',monospace; font-size:.65rem;
+      color:var(--muted); letter-spacing:.1em; text-decoration:none;
+      transition:color .25s;
+    }
+    .back-top:hover { color:var(--accent); }
+    .back-top svg { transition:transform .25s; }
+    .back-top:hover svg { transform:translateY(-3px); }
 
     /* ════════════════════════════════
        KEYFRAMES
@@ -580,7 +837,9 @@
       #about { padding:5rem 1.4rem; }
       .about-grid { grid-template-columns:1fr; gap:3rem; }
       .about-stats-strip { grid-template-columns:1fr 1fr; }
-      #projects, #contact { padding:4rem 1.8rem; }
+      .projects-grid { grid-template-columns:1fr; }
+      .contact-grid  { grid-template-columns:1fr; gap:3rem; }
+      #projects, #contact { padding:5rem 1.4rem; }
     }
   </style>
 </head>
@@ -659,22 +918,18 @@
           <div class="deco-corner-br"></div>
 
           <div class="photo-box" id="photoBox">
-            
-              
-           
-                <img src="test.PNG"              
-                    alt="Ciro Ezra Dagdag" />         
-            
-            
-            <div class="photo-placeholder-inner">
+            <img src="test.png" alt="Ciro Ezra Dagdag"
+                 style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;border-radius:5px;position:relative;z-index:2;"
+                 onerror="this.style.display='none';document.getElementById('photo-fallback').style.display='flex'"/>
+            <!-- fallback if test.png not found -->
+            <div id="photo-fallback" style="display:none;width:100%;height:100%;flex-direction:column;align-items:center;justify-content:center;gap:1rem;position:absolute;inset:0;">
               <div class="photo-monogram">CED</div>
               <div class="photo-icon-wrap">
                 <svg width="44" height="44" viewBox="0 0 24 24" fill="var(--accent)">
                   <path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-5.33 0-8 2.67-8 4v2h16v-2c0-1.33-2.67-4-8-4Z"/>
                 </svg>
               </div>
-              <span class="photo-add-label">Your Photo Here</span>
-              <div class="photo-hint">replace .photo-placeholder-inner with &lt;img&gt;</div>
+              <span class="photo-add-label">Add test.png here</span>
             </div>
             <div class="photo-scanlines"></div>
           </div>
@@ -1090,20 +1345,402 @@
 
   <div class="section-divider"></div>
 
+  <!-- ══ PROJECTS ══ -->
   <section id="projects">
-    <div class="coming-soon reveal">
-      <h2>Projects</h2>
-      <p>Section coming soon</p>
-    </div>
+    <div class="section-wrap">
+
+      <div class="projects-header">
+        <div class="projects-header-left">
+          <p class="section-label reveal">My Work</p>
+          <h2 class="section-title reveal" style="transition-delay:.08s">
+            Things I've <span>built.</span>
+          </h2>
+        </div>
+        <p class="projects-count reveal" style="transition-delay:.12s">03 Projects</p>
+      </div>
+
+      <div class="projects-grid">
+
+        <!-- ── PROJECT 1: Calculator ── -->
+        <div class="proj-card featured reveal" style="transition-delay:.1s" onclick="window.open('https://ciroezra.github.io/Calculator/','_blank')">
+          <div class="proj-img">
+            <!-- SVG Visual Mockup — Calculator -->
+            <div class="proj-mock">
+              <div class="proj-mock-bg" style="background:linear-gradient(145deg,#0f1318,#161b22)"></div>
+              <div class="proj-mock-grid"></div>
+              <svg viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;padding:18px">
+                <!-- calc shell -->
+                <rect x="90" y="6" width="140" height="168" rx="12" fill="#1a1e27" stroke="rgba(200,169,110,.25)" stroke-width="1"/>
+                <!-- display -->
+                <rect x="98" y="14" width="124" height="36" rx="6" fill="#0b0c10"/>
+                <text x="218" y="36" text-anchor="end" font-family="Space Mono,monospace" font-size="18" fill="#c8a96e" opacity=".9">1,234</text>
+                <text x="108" y="26" font-family="Space Mono,monospace" font-size="7" fill="rgba(255,255,255,.2)">AC</text>
+                <!-- button rows -->
+                <!-- row 1 -->
+                <rect x="98" y="56" width="26" height="22" rx="5" fill="#21262d"/>
+                <text x="111" y="71" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#aaa">AC</text>
+                <rect x="128" y="56" width="26" height="22" rx="5" fill="#21262d"/>
+                <text x="141" y="71" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#aaa">+/-</text>
+                <rect x="158" y="56" width="26" height="22" rx="5" fill="#21262d"/>
+                <text x="171" y="71" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#aaa">%</text>
+                <rect x="188" y="56" width="26" height="22" rx="5" fill="rgba(200,169,110,.8)"/>
+                <text x="201" y="71" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#0b0c10">÷</text>
+                <!-- row 2 -->
+                <rect x="98" y="82" width="26" height="22" rx="5" fill="#2d333b"/>
+                <text x="111" y="97" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#e8e6e0">7</text>
+                <rect x="128" y="82" width="26" height="22" rx="5" fill="#2d333b"/>
+                <text x="141" y="97" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#e8e6e0">8</text>
+                <rect x="158" y="82" width="26" height="22" rx="5" fill="#2d333b"/>
+                <text x="171" y="97" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#e8e6e0">9</text>
+                <rect x="188" y="82" width="26" height="22" rx="5" fill="rgba(200,169,110,.8)"/>
+                <text x="201" y="97" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#0b0c10">×</text>
+                <!-- row 3 -->
+                <rect x="98" y="108" width="26" height="22" rx="5" fill="#2d333b"/>
+                <text x="111" y="123" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#e8e6e0">4</text>
+                <rect x="128" y="108" width="26" height="22" rx="5" fill="#2d333b"/>
+                <text x="141" y="123" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#e8e6e0">5</text>
+                <rect x="158" y="108" width="26" height="22" rx="5" fill="#2d333b"/>
+                <text x="171" y="123" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#e8e6e0">6</text>
+                <rect x="188" y="108" width="26" height="22" rx="5" fill="rgba(200,169,110,.8)"/>
+                <text x="201" y="123" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#0b0c10">−</text>
+                <!-- row 4 -->
+                <rect x="98" y="134" width="26" height="22" rx="5" fill="#2d333b"/>
+                <text x="111" y="149" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#e8e6e0">1</text>
+                <rect x="128" y="134" width="26" height="22" rx="5" fill="#2d333b"/>
+                <text x="141" y="149" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#e8e6e0">2</text>
+                <rect x="158" y="134" width="26" height="22" rx="5" fill="#2d333b"/>
+                <text x="171" y="149" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="#e8e6e0">3</text>
+                <rect x="188" y="134" width="26" height="22" rx="5" fill="rgba(200,169,110,.8)"/>
+                <text x="201" y="149" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#0b0c10">+</text>
+                <!-- row 5 -->
+                <rect x="98" y="160" width="56" height="10" rx="5" fill="#2d333b" opacity=".5"/>
+                <rect x="158" y="160" width="26" height="10" rx="5" fill="#2d333b" opacity=".5"/>
+                <rect x="188" y="160" width="26" height="10" rx="5" fill="rgba(200,169,110,.9)" opacity=".5"/>
+              </svg>
+            </div>
+            <span class="proj-num">01</span>
+            <div class="proj-overlay">
+              <a href="https://ciroezra.github.io/Calculator/" target="_blank" class="proj-link-btn primary" onclick="event.stopPropagation()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                Live Demo
+              </a>
+            </div>
+          </div>
+          <div class="proj-body">
+            <div class="proj-top">
+              <h3 class="proj-title">Web Calculator</h3>
+              <p class="proj-desc">A clean, fully functional browser-based calculator supporting arithmetic operations with a responsive layout and keyboard input. Built to practice DOM manipulation and UI design.</p>
+            </div>
+            <div class="proj-tech">
+              <span class="proj-tag">HTML5</span>
+              <span class="proj-tag">CSS3</span>
+              <span class="proj-tag">JavaScript</span>
+            </div>
+          </div>
+          <div class="proj-footer">
+            <a href="https://ciroezra.github.io/Calculator/" target="_blank" class="proj-view-btn" onclick="event.stopPropagation()">
+              View Project
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <span class="proj-status live">Live</span>
+          </div>
+        </div>
+
+        <!-- ── PROJECT 2: Library System ── -->
+        <div class="proj-card reveal" style="transition-delay:.18s" onclick="window.open('https://ciroezra.github.io/Website/','_blank')">
+          <div class="proj-img">
+            <!-- SVG Visual Mockup — Library System -->
+            <div class="proj-mock">
+              <div class="proj-mock-bg" style="background:linear-gradient(145deg,#0f1318,#161b22)"></div>
+              <div class="proj-mock-grid"></div>
+              <svg viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;padding:14px">
+                <!-- browser chrome -->
+                <rect x="10" y="6" width="300" height="168" rx="8" fill="#13161c" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+                <!-- top bar -->
+                <rect x="10" y="6" width="300" height="22" rx="8" fill="#1a1e27"/>
+                <rect x="10" y="19" width="300" height="9" fill="#1a1e27"/>
+                <circle cx="24" cy="17" r="3.5" fill="#ff5f57"/>
+                <circle cx="34" cy="17" r="3.5" fill="#febc2e"/>
+                <circle cx="44" cy="17" r="3.5" fill="#28c840"/>
+                <rect x="56" y="12" width="180" height="10" rx="5" fill="#0b0c10"/>
+                <text x="146" y="20" text-anchor="middle" font-family="Space Mono,monospace" font-size="6" fill="rgba(255,255,255,.2)">ciroezra.github.io/Website</text>
+                <!-- sidebar -->
+                <rect x="10" y="28" width="60" height="146" fill="#0f1216"/>
+                <text x="40" y="44" text-anchor="middle" font-family="Playfair Display,serif" font-size="7" fill="rgba(200,169,110,.8)">Library</text>
+                <rect x="18" y="50" width="44" height="7" rx="3" fill="rgba(200,169,110,.15)"/>
+                <text x="40" y="57" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="6" fill="var(--accent)">📚 Books</text>
+                <rect x="18" y="61" width="44" height="7" rx="3" fill="transparent"/>
+                <text x="40" y="68" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="6" fill="rgba(255,255,255,.3)">👤 Members</text>
+                <rect x="18" y="72" width="44" height="7" rx="3" fill="transparent"/>
+                <text x="40" y="79" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="6" fill="rgba(255,255,255,.3)">🔄 Borrow</text>
+                <rect x="18" y="83" width="44" height="7" rx="3" fill="transparent"/>
+                <text x="40" y="90" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="6" fill="rgba(255,255,255,.3)">📊 Reports</text>
+                <!-- main content -->
+                <rect x="76" y="30" width="228" height="14" rx="4" fill="#1a1e27"/>
+                <text x="86" y="40" font-family="DM Sans,sans-serif" font-size="8" fill="#e8e6e0" font-weight="600">All Books</text>
+                <rect x="254" y="32" width="44" height="10" rx="5" fill="rgba(200,169,110,.8)"/>
+                <text x="276" y="40" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="6.5" fill="#0b0c10" font-weight="600">+ Add Book</text>
+                <!-- table header -->
+                <rect x="76" y="48" width="228" height="10" rx="3" fill="#1a1e27"/>
+                <text x="84" y="56" font-family="Space Mono,monospace" font-size="5.5" fill="rgba(200,169,110,.6)">TITLE</text>
+                <text x="168" y="56" font-family="Space Mono,monospace" font-size="5.5" fill="rgba(200,169,110,.6)">AUTHOR</text>
+                <text x="236" y="56" font-family="Space Mono,monospace" font-size="5.5" fill="rgba(200,169,110,.6)">STATUS</text>
+                <!-- rows -->
+                <rect x="76" y="60" width="228" height="9" rx="2" fill="rgba(255,255,255,.02)"/>
+                <text x="84" y="67" font-family="DM Sans,sans-serif" font-size="6" fill="rgba(255,255,255,.7)">The Great Gatsby</text>
+                <text x="168" y="67" font-family="DM Sans,sans-serif" font-size="6" fill="rgba(255,255,255,.5)">F. Scott</text>
+                <rect x="236" y="62" width="28" height="5" rx="2.5" fill="rgba(100,200,100,.15)"/>
+                <text x="250" y="67" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="5" fill="#6dc86d">Available</text>
+                <rect x="76" y="71" width="228" height="9" rx="2" fill="rgba(255,255,255,.02)"/>
+                <text x="84" y="78" font-family="DM Sans,sans-serif" font-size="6" fill="rgba(255,255,255,.7)">1984</text>
+                <text x="168" y="78" font-family="DM Sans,sans-serif" font-size="6" fill="rgba(255,255,255,.5)">G. Orwell</text>
+                <rect x="236" y="73" width="28" height="5" rx="2.5" fill="rgba(255,180,0,.12)"/>
+                <text x="250" y="78" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="5" fill="#f0b429">Borrowed</text>
+                <rect x="76" y="82" width="228" height="9" rx="2" fill="rgba(255,255,255,.02)"/>
+                <text x="84" y="89" font-family="DM Sans,sans-serif" font-size="6" fill="rgba(255,255,255,.7)">Dune</text>
+                <text x="168" y="89" font-family="DM Sans,sans-serif" font-size="6" fill="rgba(255,255,255,.5)">F. Herbert</text>
+                <rect x="236" y="84" width="28" height="5" rx="2.5" fill="rgba(100,200,100,.15)"/>
+                <text x="250" y="89" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="5" fill="#6dc86d">Available</text>
+                <rect x="76" y="93" width="228" height="9" rx="2" fill="rgba(255,255,255,.02)"/>
+                <text x="84" y="100" font-family="DM Sans,sans-serif" font-size="6" fill="rgba(255,255,255,.7)">Clean Code</text>
+                <text x="168" y="100" font-family="DM Sans,sans-serif" font-size="6" fill="rgba(255,255,255,.5)">R. Martin</text>
+                <rect x="236" y="95" width="28" height="5" rx="2.5" fill="rgba(100,200,100,.15)"/>
+                <text x="250" y="100" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="5" fill="#6dc86d">Available</text>
+                <!-- search bar -->
+                <rect x="76" y="108" width="228" height="12" rx="6" fill="#1a1e27" stroke="rgba(200,169,110,.2)" stroke-width=".8"/>
+                <text x="90" y="117" font-family="DM Sans,sans-serif" font-size="6.5" fill="rgba(255,255,255,.2)">🔍  Search books, authors...</text>
+                <!-- stats bottom -->
+                <rect x="76" y="126" width="70" height="40" rx="6" fill="rgba(200,169,110,.05)" stroke="rgba(200,169,110,.12)" stroke-width=".8"/>
+                <text x="111" y="142" text-anchor="middle" font-family="Playfair Display,serif" font-size="16" fill="#c8a96e" font-weight="700">142</text>
+                <text x="111" y="152" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="6" fill="rgba(255,255,255,.3)">Total Books</text>
+                <rect x="154" y="126" width="70" height="40" rx="6" fill="rgba(100,200,100,.05)" stroke="rgba(100,200,100,.12)" stroke-width=".8"/>
+                <text x="189" y="142" text-anchor="middle" font-family="Playfair Display,serif" font-size="16" fill="#6dc86d" font-weight="700">98</text>
+                <text x="189" y="152" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="6" fill="rgba(255,255,255,.3)">Available</text>
+                <rect x="232" y="126" width="70" height="40" rx="6" fill="rgba(255,180,0,.05)" stroke="rgba(255,180,0,.12)" stroke-width=".8"/>
+                <text x="267" y="142" text-anchor="middle" font-family="Playfair Display,serif" font-size="16" fill="#f0b429" font-weight="700">44</text>
+                <text x="267" y="152" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="6" fill="rgba(255,255,255,.3)">Borrowed</text>
+              </svg>
+            </div>
+            <span class="proj-num">02</span>
+            <div class="proj-overlay">
+              <a href="https://ciroezra.github.io/Website/" target="_blank" class="proj-link-btn primary" onclick="event.stopPropagation()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                Live Demo
+              </a>
+            </div>
+          </div>
+          <div class="proj-body">
+            <div class="proj-top">
+              <h3 class="proj-title">Library System</h3>
+              <p class="proj-desc">A web-based library management system for browsing, organizing, and tracking books. Features member management, borrow/return tracking, and a searchable book catalog.</p>
+            </div>
+            <div class="proj-tech">
+              <span class="proj-tag">HTML5</span>
+              <span class="proj-tag">CSS3</span>
+              <span class="proj-tag">JavaScript</span>
+            </div>
+          </div>
+          <div class="proj-footer">
+            <a href="https://ciroezra.github.io/Website/" target="_blank" class="proj-view-btn" onclick="event.stopPropagation()">
+              View Project
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <span class="proj-status live">Live</span>
+          </div>
+        </div>
+
+        <!-- ── PROJECT 3: Petra Care ── -->
+        <div class="proj-card reveal" style="transition-delay:.26s" onclick="window.open('https://drive.google.com/drive/folders/1Yicu665GMAVULpngR2osk37gbYCAQH-h','_blank')">
+          <div class="proj-img">
+            <!--
+              Add photo1.jpeg in same folder as HTML, then replace entire proj-mock div with:
+              <img src="photo1.jpeg" alt="Petra Care" style="width:100%;height:100%;object-fit:cover;display:block;"/>
+            -->
+            <div class="proj-mock">
+              <div class="proj-mock-bg" style="background:linear-gradient(145deg,#0d1a12,#111a14)"></div>
+              <div class="proj-mock-grid" style="background-image:linear-gradient(rgba(100,200,100,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(100,200,100,.06) 1px,transparent 1px)"></div>
+              <svg viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;padding:14px">
+                <!-- window frame -->
+                <rect x="10" y="6" width="300" height="168" rx="6" fill="#0f1a10" stroke="rgba(100,200,100,.12)" stroke-width="1"/>
+                <!-- title bar -->
+                <rect x="10" y="6" width="300" height="20" rx="6" fill="#142016"/>
+                <rect x="10" y="18" width="300" height="8" fill="#142016"/>
+                <circle cx="22" cy="16" r="3" fill="#ff5f57"/>
+                <circle cx="31" cy="16" r="3" fill="#febc2e"/>
+                <circle cx="40" cy="16" r="3" fill="#28c840"/>
+                <text x="160" y="19" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7" fill="rgba(255,255,255,.4)" font-weight="600">🐾 Petra Care — Veterinary Management System</text>
+                <!-- sidebar -->
+                <rect x="10" y="26" width="65" height="148" fill="#0d160e"/>
+                <text x="42" y="42" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7" fill="rgba(100,200,100,.8)" font-weight="600">PETRA CARE</text>
+                <rect x="16" y="48" width="53" height="10" rx="4" fill="rgba(100,200,100,.15)"/>
+                <text x="42" y="56" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="6" fill="#6dc86d">🏠 Dashboard</text>
+                <text x="42" y="70" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="6" fill="rgba(255,255,255,.3)">🐶 Patients</text>
+                <text x="42" y="83" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="6" fill="rgba(255,255,255,.3)">📅 Appointments</text>
+                <text x="42" y="96" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="6" fill="rgba(255,255,255,.3)">💊 Treatments</text>
+                <text x="42" y="109" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="6" fill="rgba(255,255,255,.3)">👨‍⚕️ Vets</text>
+                <text x="42" y="122" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="6" fill="rgba(255,255,255,.3)">📋 Records</text>
+                <!-- main area -->
+                <text x="85" y="40" font-family="DM Sans,sans-serif" font-size="9" fill="#e8e6e0" font-weight="600">Dashboard</text>
+                <!-- stat cards row -->
+                <rect x="80" y="46" width="55" height="32" rx="5" fill="#142016" stroke="rgba(100,200,100,.15)" stroke-width=".8"/>
+                <text x="107" y="60" text-anchor="middle" font-family="Playfair Display,serif" font-size="14" fill="#6dc86d">24</text>
+                <text x="107" y="70" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="5.5" fill="rgba(255,255,255,.3)">Patients Today</text>
+                <rect x="140" y="46" width="55" height="32" rx="5" fill="#142016" stroke="rgba(100,200,100,.15)" stroke-width=".8"/>
+                <text x="167" y="60" text-anchor="middle" font-family="Playfair Display,serif" font-size="14" fill="#f0b429">8</text>
+                <text x="167" y="70" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="5.5" fill="rgba(255,255,255,.3)">Appointments</text>
+                <rect x="200" y="46" width="55" height="32" rx="5" fill="#142016" stroke="rgba(100,200,100,.15)" stroke-width=".8"/>
+                <text x="227" y="60" text-anchor="middle" font-family="Playfair Display,serif" font-size="14" fill="#4fc3d8">142</text>
+                <text x="227" y="70" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="5.5" fill="rgba(255,255,255,.3)">Total Pets</text>
+                <rect x="260" y="46" width="44" height="32" rx="5" fill="#142016" stroke="rgba(100,200,100,.15)" stroke-width=".8"/>
+                <text x="282" y="60" text-anchor="middle" font-family="Playfair Display,serif" font-size="14" fill="#a259ff">3</text>
+                <text x="282" y="70" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="5.5" fill="rgba(255,255,255,.3)">Active Vets</text>
+                <!-- appointments table -->
+                <text x="85" y="92" font-family="Space Mono,monospace" font-size="6" fill="rgba(100,200,100,.6)">TODAY'S APPOINTMENTS</text>
+                <rect x="80" y="97" width="224" height="9" rx="2" fill="rgba(255,255,255,.03)"/>
+                <text x="86" y="104" font-family="DM Sans,sans-serif" font-size="6" fill="rgba(255,255,255,.7)">Max (Labrador)</text>
+                <text x="180" y="104" font-family="DM Sans,sans-serif" font-size="6" fill="rgba(255,255,255,.4)">09:00 AM</text>
+                <text x="238" y="104" font-family="DM Sans,sans-serif" font-size="6" fill="rgba(255,255,255,.4)">Check-up</text>
+                <rect x="80" y="108" width="224" height="9" rx="2" fill="rgba(255,255,255,.02)"/>
+                <text x="86" y="115" font-family="DM Sans,sans-serif" font-size="6" fill="rgba(255,255,255,.7)">Mochi (Shih Tzu)</text>
+                <text x="180" y="115" font-family="DM Sans,sans-serif" font-size="6" fill="rgba(255,255,255,.4)">10:30 AM</text>
+                <text x="238" y="115" font-family="DM Sans,sans-serif" font-size="6" fill="rgba(255,255,255,.4)">Vaccination</text>
+                <rect x="80" y="119" width="224" height="9" rx="2" fill="rgba(255,255,255,.02)"/>
+                <text x="86" y="126" font-family="DM Sans,sans-serif" font-size="6" fill="rgba(255,255,255,.7)">Luna (Persian Cat)</text>
+                <text x="180" y="126" font-family="DM Sans,sans-serif" font-size="6" fill="rgba(255,255,255,.4)">02:00 PM</text>
+                <text x="238" y="126" font-family="DM Sans,sans-serif" font-size="6" fill="rgba(255,255,255,.4)">Treatment</text>
+                <!-- java badge -->
+                <rect x="80" y="140" width="52" height="16" rx="8" fill="rgba(0,115,150,.15)" stroke="rgba(0,175,200,.2)" stroke-width=".8"/>
+                <text x="106" y="151" text-anchor="middle" font-family="Space Mono,monospace" font-size="5.5" fill="#4fc3d8">☕ Java App</text>
+                <rect x="138" y="140" width="60" height="16" rx="8" fill="rgba(100,200,100,.08)" stroke="rgba(100,200,100,.18)" stroke-width=".8"/>
+                <text x="168" y="151" text-anchor="middle" font-family="Space Mono,monospace" font-size="5.5" fill="#6dc86d">🐾 Vet System</text>
+              </svg>
+            </div>
+            <span class="proj-num">03</span>
+            <div class="proj-overlay">
+              <a href="https://drive.google.com/drive/folders/1Yicu665GMAVULpngR2osk37gbYCAQH-h" target="_blank" class="proj-link-btn primary" onclick="event.stopPropagation()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                View Files
+              </a>
+            </div>
+          </div>
+          <div class="proj-body">
+            <div class="proj-top">
+              <h3 class="proj-title">Petra Care</h3>
+              <p class="proj-desc">A Java desktop veterinary management system for scheduling appointments, managing pet patient records, tracking treatments, and streamlining clinic operations.</p>
+            </div>
+            <div class="proj-tech">
+              <span class="proj-tag">Java</span>
+              <span class="proj-tag">OOP</span>
+              <span class="proj-tag">Desktop App</span>
+              <span class="proj-tag">File I/O</span>
+            </div>
+          </div>
+          <div class="proj-footer">
+            <a href="https://drive.google.com/drive/folders/1Yicu665GMAVULpngR2osk37gbYCAQH-h" target="_blank" class="proj-view-btn" onclick="event.stopPropagation()">
+              View Files
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <span class="proj-status">Desktop</span>
+          </div>
+        </div>
+
+      </div><!-- end projects-grid -->
+    </div><!-- end section-wrap -->
   </section>
 
   <div class="section-divider"></div>
 
+  <!-- ══ CONTACT ══ -->
   <section id="contact">
-    <div class="coming-soon reveal">
-      <h2>Contact</h2>
-      <p>Section coming soon</p>
-    </div>
+    <div class="contact-inner">
+
+      <div class="section-wrap" style="padding:0">
+        <p class="section-label reveal">Get In Touch</p>
+        <h2 class="section-title reveal" style="transition-delay:.08s">
+          Let's <span>connect.</span>
+        </h2>
+      </div>
+
+      <div class="contact-grid">
+
+        <!-- left -->
+        <div class="contact-left">
+          <div class="avail-badge reveal" style="transition-delay:.1s">
+            <div class="avail-dot"></div>
+            <span>Open to collaboration &amp; opportunities</span>
+          </div>
+
+          <blockquote class="contact-tagline reveal" style="transition-delay:.16s">
+            "Have a project in mind or just want to say hi? My inbox is always open."
+          </blockquote>
+
+          <p class="contact-blurb reveal" style="transition-delay:.22s">
+            Whether you're looking for a developer for a project, want to collaborate, or just want to connect — feel free to reach out through any of the links. I'll get back to you as soon as I can.
+          </p>
+        </div>
+
+        <!-- right — contact cards -->
+        <div class="contact-right">
+
+          <!-- Email -->
+          <a href="mailto:dagdagciroezra@gmail.com" class="contact-card reveal"
+             style="--cc-color:#c8a96e; transition-delay:.1s">
+            <div class="cc-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.7" stroke-linecap="round">
+                <rect x="2" y="4" width="20" height="16" rx="3"/>
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+              </svg>
+            </div>
+            <div class="cc-body">
+              <span class="cc-label">Email</span>
+              <span class="cc-value">dagdagciroezra@gmail.com</span>
+            </div>
+            <svg class="cc-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+
+          <!-- GitHub -->
+          <a href="https://github.com/CiroEzra" target="_blank" class="contact-card reveal"
+             style="--cc-color:#ccc; transition-delay:.18s">
+            <div class="cc-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="var(--muted-light)">
+                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+              </svg>
+            </div>
+            <div class="cc-body">
+              <span class="cc-label">GitHub</span>
+              <span class="cc-value">github.com/CiroEzra</span>
+            </div>
+            <svg class="cc-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+
+          <!-- Facebook -->
+          <a href="https://www.facebook.com/share/18piHp75y5/?mibextid=wwXIfr" target="_blank" class="contact-card reveal"
+             style="--cc-color:#1877f2; transition-delay:.26s">
+            <div class="cc-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="#1877f2">
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+              </svg>
+            </div>
+            <div class="cc-body">
+              <span class="cc-label">Facebook</span>
+              <span class="cc-value">Ciro Ezra Dagdag</span>
+            </div>
+            <svg class="cc-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+
+        </div><!-- end contact-right -->
+      </div><!-- end contact-grid -->
+
+      <!-- footer -->
+      <div class="contact-footer reveal" style="transition-delay:.3s">
+        <p class="footer-copy">© 2025 <span>Ciro Ezra Dagdag</span> — Designed &amp; Built with passion.</p>
+        <a href="#hero" class="back-top">
+          Back to top
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+        </a>
+      </div>
+
+    </div><!-- end contact-inner -->
   </section>
 
 <!-- ═══════════════════════════════════════════
